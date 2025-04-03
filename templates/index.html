@@ -2,59 +2,38 @@
 <html>
 <head>
     <title>OlavBot Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
-        .graf { width: 90%; max-width: 800px; margin: 30px auto; background: #fff; padding: 20px; border-radius: 10px; }
-    </style>
 </head>
 <body>
-    <h1>📊 OlavBot Dashboard</h1>
+    <h1>OlavBot Dashboard</h1>
     <p>Sist oppdatert: {{ tidspunkt }}</p>
 
+    <h2>Aksjer</h2>
     {% for navn, data in aksjer.items() %}
-        <div class="graf">
-            <h2>{{ navn }}</h2>
-            <canvas id="{{ navn }}"></canvas>
-        </div>
+        <h3>{{ navn }}</h3>
+        {% if data.labels %}
+            <ul>
+            {% for label, value in zip(data.labels, data.values) %}
+                <li>{{ label }}: {{ value }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>Ingen data</p>
+        {% endif %}
     {% endfor %}
 
+    <h2>Krypto</h2>
     {% for navn, data in krypto.items() %}
-        <div class="graf">
-            <h2>{{ navn }}</h2>
-            <canvas id="{{ navn }}"></canvas>
-        </div>
+        <h3>{{ navn }}</h3>
+        {% if data.labels %}
+            <ul>
+            {% for label, value in zip(data.labels, data.values) %}
+                <li>{{ label }}: {{ value }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>Ingen data</p>
+        {% endif %}
     {% endfor %}
-
-    <script>
-        {% for navn, data in aksjer.items() %}
-            new Chart(document.getElementById('{{ navn }}'), {
-                type: 'line',
-                data: {
-                    labels: {{ data.labels|safe }},
-                    datasets: [{
-                        label: '{{ navn }}',
-                        data: {{ data.values|safe }},
-                        borderWidth: 2
-                    }]
-                }
-            });
-        {% endfor %}
-
-        {% for navn, data in krypto.items() %}
-            new Chart(document.getElementById('{{ navn }}'), {
-                type: 'line',
-                data: {
-                    labels: {{ data.labels|safe }},
-                    datasets: [{
-                        label: '{{ navn }}',
-                        data: {{ data.values|safe }},
-                        borderWidth: 2
-                    }]
-                }
-            });
-        {% endfor %}
-    </script>
 </body>
 </html>
 
