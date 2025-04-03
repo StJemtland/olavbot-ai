@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OlavBot Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+        .graf { width: 90%; max-width: 800px; margin: 30px auto; background: #fff; padding: 20px; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <h1>📊 OlavBot Dashboard</h1>
+    <p>Sist oppdatert: {{ tidspunkt }}</p>
+
+    {% for navn, data in aksjer.items() %}
+        <div class="graf">
+            <h2>{{ navn }}</h2>
+            <canvas id="{{ navn }}"></canvas>
+        </div>
+    {% endfor %}
+
+    {% for navn, data in krypto.items() %}
+        <div class="graf">
+            <h2>{{ navn }}</h2>
+            <canvas id="{{ navn }}"></canvas>
+        </div>
+    {% endfor %}
+
+    <script>
+        {% for navn, data in aksjer.items() %}
+            new Chart(document.getElementById('{{ navn }}'), {
+                type: 'line',
+                data: {
+                    labels: {{ data.labels|safe }},
+                    datasets: [{
+                        label: '{{ navn }}',
+                        data: {{ data.values|safe }},
+                        borderWidth: 2
+                    }]
+                }
+            });
+        {% endfor %}
+
+        {% for navn, data in krypto.items() %}
+            new Chart(document.getElementById('{{ navn }}'), {
+                type: 'line',
+                data: {
+                    labels: {{ data.labels|safe }},
+                    datasets: [{
+                        label: '{{ navn }}',
+                        data: {{ data.values|safe }},
+                        borderWidth: 2
+                    }]
+                }
+            });
+        {% endfor %}
+    </script>
+</body>
+</html>
+
