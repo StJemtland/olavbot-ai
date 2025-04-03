@@ -11,10 +11,9 @@ def hent_data(ticker):
             "labels": [],
             "values": []
         }
-
     return {
         "labels": data.index.strftime("%d.%m %H:%M").tolist(),
-        "values": data["Close"].round(2).to_list()  # NB! Ikke tolist() men to_list()
+        "values": data["Close"].round(2).tolist()  # ✅ Riktig metode
     }
 
 @app.route("/")
@@ -34,5 +33,5 @@ def index():
     return render_template("index.html", aksjer=aksjer, krypto=krypto, tidspunkt=datetime.datetime.now().strftime("%d.%m %H:%M"))
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
 
